@@ -3,6 +3,7 @@
 #include <math.h>
 int prime(int x){
 	int i,j,k,m;
+	printf("%s\n", "hello"  );
 	int lim = (x+1)/2;
 	int count = 0;
 	int a[x+1];
