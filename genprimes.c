@@ -1,7 +1,7 @@
+#include "mpi.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mpi.h"
 int prime(int start, int end){
 	int x = end;
 	int i,j,k,m;
