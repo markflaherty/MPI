@@ -3,7 +3,7 @@
 #include <math.h>
 int prime(int x){
 	int i,j,k,m;
-	int lim = floor(x+1/2);
+	int lim = (int)floor(x+1/2);
 	int count = 0;
 	int a[x+1];
 	for(j = 2; j <= x; j++){
