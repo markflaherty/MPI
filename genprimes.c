@@ -49,6 +49,7 @@ int main(int argc, char *argv[]){
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
 	int jump = (limit/tasks);
 	myStart = rank*jump;
+	myEnd = myStart+jump+1;
 	int count = prime(myStart, myEnd);
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	printf("%s\n","-------output-------" );
