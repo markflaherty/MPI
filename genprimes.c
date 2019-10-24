@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 int prime(int start, int end){
-	int x = end;
 	int i,j,k,m;
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
@@ -16,7 +15,7 @@ int prime(int start, int end){
 		if(curr == 0){
 			continue;
 		}
-		for(k = i; k <= end; k++){
+		for(k = i; k < end; k++){
 			if(a[k] != 0){
 				if(a[k] != curr && a[k]%curr == 0){
 					a[k] = 0;
@@ -38,7 +37,7 @@ int prime(int start, int end){
 			}
 		}
 	}
-	for(m = start; m <= end; m++){
+	for(m = start; m < end; m++){
 		if(a[m] != 0){
 			count++;
 		}
