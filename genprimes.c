@@ -33,7 +33,6 @@ int prime(int start, int end){
 }
 int limit = 100;
 int main(int argc, char *argv[]){
-	int limit;
 	int tasks;
 	int rank;
 	int myStart;
