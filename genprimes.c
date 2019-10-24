@@ -44,19 +44,11 @@ int main(int argc, char *argv[]){
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
 	int jump = (limit/tasks);
 	myStart = rank*jump;
-	myEnd = (rank+1)*jump;
-	for(i = 0; i < tasks; i++){
-		if(i == myRank){
-
-		}
-	}
-	/*
 	int count = prime(myStart, myEnd);
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	printf("%s\n","-------output-------" );
 	MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 	printf("%d\n", sum);
-	*/
 	MPI_Finalize();
 		
 
