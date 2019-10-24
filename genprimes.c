@@ -7,10 +7,10 @@ int prime(int start, int end){
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
 	int a[end-start];
-	for(j = start; j <= end; j++){
+	for(j = start; j < end; j++){
 		a[j] = j;
 	}
-	for(i = start; i <= lim; i++){
+	for(i = start; i < lim; i++){
 		int curr = a[i];
 		if(curr == 0){
 			continue;
