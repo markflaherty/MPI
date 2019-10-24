@@ -59,7 +59,15 @@ int main(int argc, char *argv[]){
 	myStart = rank*jump;
 	myEnd = myStart+jump;
 	int count = prime(myStart, myEnd);
-	for(int i = 0; i < )
+	for(int i = 0; i < tasks; i++){
+		if(i == rank){
+			int count = prime(myStart, myEnd);
+			MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
+		}
+	}
+	if(rank == 0){
+		printf("%d\n",sum);
+	}
 
 	/*
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
