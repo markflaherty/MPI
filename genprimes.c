@@ -5,7 +5,7 @@
 int prime(int start, int end){
 	int x = end;
 	int i,j,k,m;
-	int lim = (int)(x+1)/2;
+	int lim = (int)((end-start)+1)/2;
 	int count = 0;
 	int a[end-start];
 	for(j = start; j <= end; j++){
