@@ -8,7 +8,6 @@ int prime(int start, int end){
 	int lim = (int)(x+1)/2;
 	int count = 0;
 	int a[x+1];
-	int b[] = &arr;
 	for(j = start; j <= end; j++){
 		a[j] = j;
 	}
@@ -19,7 +18,7 @@ int prime(int start, int end){
 		}
 		for(k = i; k <= end; k++){
 			if(a[k] != 0){
-				if(a[k] != curr && a[k]%curr == 0 &&){
+				if(a[k] != curr && a[k]%curr == 0){
 					a[k] = 0;
 				}
 				else if(a[k] != curr){
