@@ -42,9 +42,9 @@ int main(int argc, char *argv[]){
 	MPI_Init(&argc,&argv);
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
-	int jump = (int)(limit/tasks);
+	int jump = (limit/tasks);
 	myStart = rank*jump;
-	myEnd = myStart+jump+1;
+	myEnd = (rank+1)*jump;
 	printf("%d\t %d\t %d\t %d\t %d\n", jump, rank, myStart, myEnd);
 	//printf("%d\t %d\t %d\t %d\n", rank, myStart, jump, myEnd );
 	//int count = prime(myStart, myEnd);
