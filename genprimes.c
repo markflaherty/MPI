@@ -18,7 +18,7 @@ int prime(int start, int end){
 		}
 		for(k = i; k <= end; k++){
 			if(a[k] != 0){
-				if(a[k] != curr && a[k]%curr == 0){
+				if(a[k] != curr && a[k]%curr == 0 || (a[k]%2 == 0 || a[k]%3 == 0)){
 					a[k] = 0;
 				}
 			}
@@ -33,6 +33,7 @@ int prime(int start, int end){
 }
 int limit = 100;
 int main(int argc, char *argv[]){
+	int i;
 	int tasks;
 	int rank;
 	int myStart;
@@ -44,11 +45,18 @@ int main(int argc, char *argv[]){
 	int jump = (limit/tasks);
 	myStart = rank*jump;
 	myEnd = (rank+1)*jump;
+	for(i = 0; i < tasks; i++){
+		if(i == myRank){
+
+		}
+	}
+	/*
 	int count = prime(myStart, myEnd);
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	printf("%s\n","-------output-------" );
 	MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 	printf("%d\n", sum);
+	*/
 	MPI_Finalize();
 		
 
