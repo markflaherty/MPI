@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 	int jump = (int)(limit/tasks);
 	myStart = rank*jump;
 	myEnd = myStart+jump+1;
-	printf("%d\n\n\n\n", jump);
+	printf("%d\t %d\t %d\t %d\t %d\n", jump, rank, myStart, myEnd);
 	//printf("%d\t %d\t %d\t %d\n", rank, myStart, jump, myEnd );
 	//int count = prime(myStart, myEnd);
 	//MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
