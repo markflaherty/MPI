@@ -10,7 +10,7 @@ int prime(int start, int end){
 	for(j = start; j < end; j++){
 		a[j] = j;
 	}
-	for(i = start; i < lim; i++){
+	for(i = start; i <= lim; i++){
 		int curr = a[i];
 		if(curr == 0){
 			continue;
@@ -61,8 +61,6 @@ int main(int argc, char *argv[]){
 	int count = prime(myStart, myEnd);
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
-	if(rank == 0)
-		printf("%d\n", sum);
 	MPI_Finalize();
 		
 
