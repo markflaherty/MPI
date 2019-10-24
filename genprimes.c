@@ -21,10 +21,19 @@ int prime(int start, int end){
 				if(a[k] != curr && a[k]%curr == 0){
 					a[k] = 0;
 				}
-				else if(a[k] != 2 && a[k] != 3 && a[k] != 5 && a[k] != 7){
-					if(a[k]%2 == 0 || a[k]%3 == 0 || a[k]%5 == 0 || a[k]%7 == 0){
+				if(a[k]%2 == 0 || a[k]%3 == 0 || a[k]%5 == 0 || a[k]%7 == 0){
+					if(a[k]%2==0 && a[k] != 2){
 						a[k] = 0;
 					}
+					else if(a[k]%3==0 && a[k] != 3){
+						a[k] = 0;
+					}
+					else if(a[k]%5==0 && a[k] != 5){
+						a[k] = 0;
+					}
+					else if(a[k]%7==0 && a[k] != 7){
+						a[k] = 0;
+					}	
 				}
 			}
 		}
