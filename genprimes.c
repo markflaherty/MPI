@@ -12,8 +12,6 @@ int prime(int start, int end, int rank){
 	for(j = start; j < end-1; j++){
 		a[j] = j;
 	}
-	free(*a);
-	/*
 	for(i = start; i <= lim; i++){
 		int curr = a[i];
 		if(curr == 0){
@@ -32,7 +30,7 @@ int prime(int start, int end, int rank){
 			count++;
 		}
 	}
-	*/
+	free(*a);
 	return count;
 }
 int limit = 100;
