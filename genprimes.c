@@ -11,6 +11,7 @@ int prime(int start, int end, int rank){
 	for(j = start; j <= end; j++){
 		a[j] = j;
 	}
+	/*
 	for(i = start; i <= lim; i++){
 		int curr = a[i];
 		if(curr == 0){
@@ -29,7 +30,8 @@ int prime(int start, int end, int rank){
 			count++;
 		}
 	}
-	free(*a);
+	*/
+	free(a);
 	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	return count;
 }
