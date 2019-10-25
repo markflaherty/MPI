@@ -8,6 +8,7 @@ int prime(int start, int end, int rank){
 	int count = 0;
 	int distance = end-start;
 	int *a = malloc(sizeof(int)*distance);
+	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	/*
 	for(j = start; j < end; j++){
 		a[j] = j;
@@ -33,7 +34,6 @@ int prime(int start, int end, int rank){
 	}
 	*/
 	free(*a);
-	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	return count;
 }
 int limit = 100;
