@@ -8,7 +8,7 @@ int prime(int start, int end, int rank){
 	int count = 0;
 	int distance = end-start;
 	int a[distance+1];
-	printf("%d\t %d\t %d\t %d\n", rank, start, end, curr);
+	printf("%d\t %d\t %d\n", rank, start, end);
 	/*
 	for(j = start; j < end; j++){
 		a[j] = j;
