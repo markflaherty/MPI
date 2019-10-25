@@ -31,7 +31,7 @@ int prime(int start, int end, int rank){
 		}
 	}
 	*/
-	free(a);
+	free(*a);
 	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	return count;
 }
