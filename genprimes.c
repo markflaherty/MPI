@@ -6,7 +6,8 @@ int prime(int start, int end){
 	int i,j,k,m;
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
-	int a[end-start];
+	int distance = end-start
+	int a[distance];
 	for(j = start; j < end; j++){
 		a[j] = j;
 	}
