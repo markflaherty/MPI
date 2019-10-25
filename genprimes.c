@@ -4,7 +4,7 @@
 #include <math.h>
 int prime(int start, int end){
 	int i,j,k,m;
-	int lim = (int)((end-start)+1)/2;
+	int lim = floor(((end-start)+1)/2);
 	int count = 0;
 	int distance = end-start;
 	int a[distance];
@@ -46,13 +46,9 @@ int prime(int start, int end){
 	return count;
 }
 int limit = 100;
+int sum = 0;
 int main(int argc, char *argv[]){
-	int i;
-	int tasks;
-	int rank;
-	int myStart; 
-	int myEnd;
-	int sum = 0;
+	int i,tasks,rank,myStart,myEnd;
 	MPI_Init(&argc,&argv); 
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
@@ -73,9 +69,9 @@ int main(int argc, char *argv[]){
 		}
 	}
 	*/
-	int count = prime(myStart, myEnd);
-	MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
+	//int count = prime(myStart, myEnd);
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
+	//MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 	/*
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
