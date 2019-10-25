@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-int prime(int start, int end){
+int prime(int start, int end, int rank){
 	int i,j,k,m;
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
@@ -13,6 +13,7 @@ int prime(int start, int end){
 	}
 	for(i = start; i <= lim; i++){
 		int curr = a[i];
+		printf("%d\t %d\t %d\t %d\n", rank, start, end, curr);
 		if(curr == 0){
 			continue;
 		}
@@ -55,9 +56,9 @@ int main(int argc, char *argv[]){
 		}
 	}
 	*/
-	int count = prime(myStart, myEnd);
+	int count = prime(myStart, myEnd, rank);
 	//int count = 0;
-	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
+	//printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	//MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 	/*
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
