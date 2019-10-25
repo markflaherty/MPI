@@ -70,6 +70,7 @@ int main(int argc, char *argv[]){
 	}
 	*/
 	//int count = prime(myStart, myEnd);
+	int count = 0;
 	printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	//MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 	/*
