@@ -7,7 +7,7 @@ int prime(int start, int end){
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
 	int a[end-start];
-	for(j = start; j <= end; j++){
+	for(j = start; j < end; j++){
 		a[j] = j;
 	}
 	for(i = start; i <= lim; i++){
@@ -49,27 +49,26 @@ int main(int argc, char *argv[]){
 	int i;
 	int tasks;
 	int rank;
-	int myStart;
+	int myStart; 
 	int myEnd;
 	int sum = 0;
-	MPI_Init(&argc,&argv);
+	MPI_Init(&argc,&argv); 
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
 	int jump = (limit/tasks);
 	myStart = rank*jump;
 	myEnd = myStart+jump;
 	int count = prime(myStart, myEnd);
+	if(rank == 0){
+		MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
+		printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
+	}
 	for(i = 1; i < tasks; i++){
 		if(i == rank){
 			int count = prime(myStart, myEnd);
 			MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
 			printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 		}
-	}
-	if(rank == 0){
-		MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
-		printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
-		printf("%d\n",sum);
 	}
 
 	/*
