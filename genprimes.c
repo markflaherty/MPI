@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include "math.h"
 int prime(int start, int end){
 	int i,j,k,m;
 	int lim = floor(((end-start)+1)/2);
