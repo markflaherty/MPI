@@ -8,12 +8,13 @@ int prime(int start, int end, int rank){
 	int count = 0;
 	int distance = end-start;
 	int a[distance+1];
+	printf("%d\t %d\t %d\t %d\n", rank, start, end, curr);
+	/*
 	for(j = start; j < end; j++){
 		a[j] = j;
 	}
 	for(i = start; i <= lim; i++){
 		int curr = a[i];
-		printf("%d\t %d\t %d\t %d\n", rank, start, end, curr);
 		if(curr == 0){
 			continue;
 		}
@@ -30,6 +31,7 @@ int prime(int start, int end, int rank){
 			count++;
 		}
 	}
+	*/
 	return count;
 }
 int limit = 100;
