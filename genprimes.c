@@ -7,7 +7,7 @@ int prime(int start, int end, int rank){
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
 	int distance = end-start;
-	int *a = malloc(sizeof(int)*distance);
+	//int *a = malloc(sizeof(int)*distance);
 	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	/*
 	for(j = start; j < end; j++){
@@ -39,13 +39,33 @@ int prime(int start, int end, int rank){
 int limit = 100;
 int sum = 0;
 int main(int argc, char *argv[]){
-	int i,tasks,rank,myStart,myEnd;
+	int i,p,tasks,rank,myStart,myEnd;
+	int *nums;
+	MPI_Status stat;
 	MPI_Init(&argc,&argv); 
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Comm_size(MPI_COMM_WORLD,&tasks);
 	int jump = (limit/tasks);
+	int offset = 0;
 	myStart = rank*jump;
 	myEnd = myStart+jump;
+	if(rank == 0){
+		nums = malloc(limit*sizeof(int));
+		for(i = 2; i <= limit; i++){
+			nums[i] = i;
+		}
+		for(p = 1; p < tasks; p++){
+			MPI_Send(&nums[offset], jump, MPI_INT,p, 0, MPI_COMM_WORLD);
+			offset+=jump;
+		}
+		prime(myStart, myEnd, rank);
+
+	}
+	else{
+		nums = malloc(jump*sizeof(int));
+		MPI_Recv(nums,jump, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
+		prime(myStart, myEnd, rank);
+	}
 	/*
 	if(rank == 0){
 		int count = prime(myStart, myEnd);
@@ -60,7 +80,7 @@ int main(int argc, char *argv[]){
 		}
 	}
 	*/
-	int count = prime(myStart, myEnd, rank);
+	//int count = prime(myStart, myEnd, rank);
 	//int count = 0;
 	//printf(" %d\t %d\t %d\t %d\t %d\t %d\n",count,tasks,jump, rank, myStart, myEnd);
 	//MPI_Reduce(&count, &sum, 1, MPI_INT, MPI_SUM,0,MPI_COMM_WORLD);
