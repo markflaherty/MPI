@@ -21,6 +21,7 @@ int prime(int start, int end){
 				if(a[k] != curr && a[k]%curr == 0){
 					a[k] = 0;
 				}
+				/*
 				else{
 					if(a[k]%2==0 && a[k] != 2){
 						a[k] = 0;
@@ -35,6 +36,7 @@ int prime(int start, int end){
 						a[k] = 0;
 					}	
 				}
+				*/
 			}
 		}
 	}
