@@ -33,7 +33,6 @@ int prime(int start, int end, int rank){
 		}
 	}
 	*/
-	free(*a);
 	return count;
 }
 int limit = 100;
