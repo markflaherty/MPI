@@ -8,7 +8,7 @@ int prime(int start, int end, int rank){
 	int count = 0;
 	int distance = end-start;
 	int *a = malloc(sizeof(int)*distance);
-	for(j = start; j < end-1; j++){
+	for(j = start; j <= end; j++){
 		a[j] = j;
 	}
 	for(i = start; i <= lim; i++){
