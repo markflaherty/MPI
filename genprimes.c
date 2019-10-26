@@ -2,32 +2,104 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "this_MPI.h"
-
-
 int main (int argc, char ** argv) {
-  int i;
-  int n = 100;
-  int index;
-  int size;
-  int prime;
-  int count;
-  int global_count;
-  int first;
-  long int high_value;
-  long int low_value;
-  int comm_rank;
-  int comm_size;
-  char * marked;
-  double runtime;
-  
+  int i, p, n, index, rank, comm_size size, prime, count, global, first, high, low;
+  char* hit;
+  double time taken
   MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &comm_rank);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
-  
   MPI_Barrier(MPI_COMM_WORLD);
   runtime = -MPI_Wtime();
+  low  = 2+(long int)(rank)*(long int)(n - 1)/(long int)comm_size;
+  high = 1 + (long int)(rank + 1) * (long int)(n - 1)/(long int)comm_size;
+  size = high-low+1;
+  hit = (char*) calloc(size, sizeof(char));
+  if (hit == NULL) {
+   MPI_Finalize();
+   exit(1);
+  }
   
+  if (rank == 0) 
+  	index = 0;
+  prime = 2;
+  while(prime*prime <= n){
+  	if (prime*prime > low) {
+      	first = prime*prime - low;
+    } 
+    else{
+    	if(low%prime == 0){
+    		first = 0;
+    	}
+    	else{
+    		first = prime-(low%prime);
+    	}
+    }
+    for(i = first; i < size; i+= prime){
+    	hit[i] = 1;
+    }
+    if(rank == 0){
+    	while(hit[++index]);
+    	prime = index+2;
+    }
+    if(comm_size > 1){
+    	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
+    }
+  }
+  /*
+  do {
+    if (prime*prime > low) {
+      first = prime*prime - low;
+    } 
+    else {
+      if ((low % prime) == 0) 
+      	first = 0;
+      else 
+      	first = prime - (low % prime);
+    }
+    for (i = first; i < size; i += prime) 
+    	marked[i] = 1;
+    if (comm_rank == 0) {
+      while (marked[++index]);
+      prime = index + 2;
+    }
+    if (comm_size > 1) 
+    	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
+  } while (prime * prime <= n);
+  */
+  count = 0;
+  for(p = 0; p < size; p++){
+  	if(hit[p] == 0){
+  		count++;
+  	}
+  }
+  if (comm_size > 1) {
+    MPI_Reduce(&count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  } 
+  else {
+    global = count;
+  }
+  time += MPI_Wtime();
+  if (rank == 0) {
+    printf("In %f seconds we found %d primes less than or equal to %d.\n",
+		runtime, global_count, n);
+  }
+  MPI_Finalize();
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*
   // Check for the command line argument.
   if (argc != 2) {
@@ -48,73 +120,6 @@ int main (int argc, char ** argv) {
   */
   // Figure out this process's share of the array, as well as the integers
   // represented by the first and last array elements.
-  low_value  = 2 + (long int)(comm_rank) * (long int)(n - 1) / (long int)comm_size;
-  high_value = 1 + (long int)(comm_rank + 1) * (long int)(n - 1) / (long int)comm_size;
-  size = high_value - low_value + 1;
-  
-  marked = (char *) calloc(size, sizeof(char));
-  
-  if (marked == NULL) {
-   printf("Cannot allocate enough memory.\n");
-   MPI_Finalize();
-   exit(1);
-  }
-  
-  if (comm_rank == 0) index = 0;
-  prime = 2;
-  
-  do {
-    if (prime * prime > low_value) {
-      first = prime * prime - low_value;
-    } else {
-      if ((low_value % prime) == 0) first = 0;
-      else first = prime - (low_value % prime);
-    }
-    
-    for (i = first; i < size; i += prime) marked[i] = 1;
-    
-    if (comm_rank == 0) {
-      while (marked[++index]);
-      prime = index + 2;
-    }
-    
-    if (comm_size > 1) MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
-  } while (prime * prime <= n);
-  
-  count = 0;
-  
-  for (i = 0; i < size; i++) if (marked[i] == 0) count++;
-  
-  if (comm_size > 1) {
-    MPI_Reduce(&count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-  } else {
-    global_count = count;
-  }
-  
-  runtime += MPI_Wtime();
-  
-  if (comm_rank == 0) {
-    printf("In %f seconds we found %d primes less than or equal to %d.\n",
-		runtime, global_count, n);
-  }
-  
-  MPI_Finalize();
-  return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 #include <mpi.h>
