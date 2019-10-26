@@ -6,12 +6,12 @@ int main (int argc, char ** argv) {
   int i, p, n, index, rank, comm_size size, prime, count, global, first, high, low;
   n = 100;
   char* hit;
-  double time taken
+  double time;
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
   MPI_Barrier(MPI_COMM_WORLD);
-  runtime = -MPI_Wtime();
+  time = -MPI_Wtime();
   low  = 2+(long int)(rank)*(long int)(n - 1)/(long int)comm_size;
   high = 1 + (long int)(rank + 1) * (long int)(n - 1)/(long int)comm_size;
   size = high-low+1;
@@ -83,7 +83,7 @@ int main (int argc, char ** argv) {
   time += MPI_Wtime();
   if (rank == 0) {
     printf("In %f seconds we found %d primes less than or equal to %d.\n",
-		runtime, global_count, n);
+		time, count, n);
   }
   MPI_Finalize();
   return 0;
