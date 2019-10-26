@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 int main (int argc, char ** argv) {
-  int i, p, n, index, rank, comm_size, size, prime, count, global, first, high, low;
+  int i, p, n, index, rank, comm_size, size, prime, count, global, first;
+  long int high, low;
   n = 100;
   char* hit;
   double time;
