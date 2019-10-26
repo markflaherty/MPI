@@ -62,7 +62,7 @@ int main (int argc, char ** argv) {
     for (i = first; i < size; i += prime) 
     	hit[i] = 1;
     if (rank == 0) {
-      while (marked[++index]);
+      while (hit[++index]);
       prime = index + 2;
     }
     if (comm_size > 1) 
