@@ -38,9 +38,14 @@ int main (int argc, char ** argv) {
   do {
     if (prime* prime > low) {
       first = prime*prime-low;
-    } else {
-      if ((low % prime) == 0) first = 0;
-      else first = prime - (low % prime);
+    } 
+    else {
+      if ((low % prime) == 0){
+      	first = 0;
+      } 
+      else{
+      	first = prime - (low % prime);
+      } 
     }
     
     for (i = first; i < size; i += prime) hit[i] = 1;
@@ -60,12 +65,12 @@ int main (int argc, char ** argv) {
   
   if (comm_size > 1) {
     MPI_Reduce(&count, &g, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-  } else {
+  } 
+  else {
     g = count;
   }
   
   t += MPI_Wtime();
-  
   if (rank == 0) {
     printf("In %f seconds we found %d primes less than or equal to %d.\n",
 		t, g, n);
