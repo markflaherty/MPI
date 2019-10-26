@@ -7,7 +7,7 @@
 
 int main (int argc, char ** argv) {
   int i;
-  int n;
+  int n = 100;
   int index;
   int size;
   int prime;
@@ -36,7 +36,7 @@ int main (int argc, char ** argv) {
     exit(1);
   }
   */
-  n = atoi(argv[1]);
+  //n = atoi(argv[1]);
   /*
   // Bail out if all the primes used for sieving are not all held by
   // process zero.
