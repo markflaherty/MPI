@@ -24,24 +24,25 @@ int main (int argc, char ** argv) {
   
   MPI_Barrier(MPI_COMM_WORLD);
   runtime = -MPI_Wtime();
-  
+  /*
   // Check for the command line argument.
   if (argc != 2) {
     if (comm_rank == 0) printf("Please supply a range.\n");
     MPI_Finalize();
     exit(1);
   }
-  
-  n = atoi(argv[1]);
+  */
+  //n = atoi(argv[1]);
   
   // Bail out if all the primes used for sieving are not all held by
   // process zero.
+  /*
   if ((2 + (n - 1 / comm_size)) < (int) sqrt((double) n)) {
     if (comm_rank == 0) printf("Too many processes.\n");
     MPI_Finalize();
     exit(1);
   }
-  
+  */
   // Figure out this process's share of the array, as well as the integers
   // represented by the first and last array elements.
   low_value  = 2 + (long int)(comm_rank) * (long int)(n - 1) / (long int)comm_size;
