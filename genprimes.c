@@ -54,14 +54,14 @@ int main (int argc, char ** argv) {
       first = prime*prime - low;
     } 
     else {
-      if ((low % prime) == 0) 
+      if ((low%prime) == 0) 
       	first = 0;
       else 
       	first = prime - (low % prime);
     }
     for (i = first; i < size; i += prime) 
-    	marked[i] = 1;
-    if (comm_rank == 0) {
+    	hit[i] = 1;
+    if (rank == 0) {
       while (marked[++index]);
       prime = index + 2;
     }
