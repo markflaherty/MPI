@@ -114,6 +114,7 @@ int main(int argc, char *argv[]){
 				next+1;
 			i = next;
 		}
+		printf("%d\n",i);
 		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 		local = 0;
 		global = 0;
