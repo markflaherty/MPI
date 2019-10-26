@@ -84,11 +84,12 @@ int main(int argc, char *argv[]){
 	int offset = 0;
 	myStart = rank*jump;
 	myEnd = myStart+jump;
-	int first_elem = rank*(limit-2)/p + 2;
-    int last_elem = (rank+1)*(limit-2)/p - 1 + 2;
+	int first_elem = rank*(limit-2)/tasks + 2;
+    int last_elem = (rank+1)*(limit-2)/tasks - 1 + 2;
     int size = last_elem - first_elem + 1;
     bool *array[size];
     int next;
+    int index_first_multiple;
     int global;
     int local;
     for(i = 0; i < size; i++){
