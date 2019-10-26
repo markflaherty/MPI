@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
 			array[i-2] = 0;
 		if(rank == 0){
 			next = i+1;
-			while(!array[next-2])
+			while(array[next-2] == 0)
 				next+1;
 		}
 		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
