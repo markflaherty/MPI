@@ -87,7 +87,7 @@ int main(int argc, char *argv[]){
 	int first_elem = rank*(limit-2)/tasks + 2;
     int last_elem = (rank+1)*(limit-2)/tasks - 1 + 2;
     int size = last_elem - first_elem + 1;
-    bool *array[size];
+    boolean *array[size];
     int next;
     int index_first_multiple;
     int global;
