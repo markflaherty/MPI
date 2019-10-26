@@ -10,20 +10,28 @@ int* prime(int start, int end, int rank, int* arr, int* a){
 	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
 	if(arr == NULL){
 		for(j = 0; j < distance; j++){
-			int curr = a[i];
+			int curr = arr[i];
 			if(curr == 0){
 				continue;
 			}
 			for(k = i; k < end; k++){
 				if(a[k] != 0){
-					if(a[k] != curr && a[k]%curr == 0){
-						a[k] = 0;
+					if(arr[k] != curr && arr[k]%curr == 0){
+						arr[k] = 0;
 					}
 				}
 			}
 		}
 	}
 	else{
+		for(p = 0; p < sizeof(a)/sizeof(int); p++){
+			int curr = a[p];
+			for(i = 0; i < distance; i++){
+				if(arr[i]%curr == 0){
+					arr[i] = 0;
+				}
+			}
+		}
 
 	}
 
@@ -66,7 +74,7 @@ int* prime(int start, int end, int rank, int* arr, int* a){
 int limit = 100;
 int sum = 0;
 int main(int argc, char *argv[]){
-	int i,p,tasks,rank,myStart,myEnd;
+	int i,p,m,tasks,rank,myStart,myEnd;
 	int *nums;
 	MPI_Status stat;
 	MPI_Init(&argc,&argv); 
@@ -76,7 +84,46 @@ int main(int argc, char *argv[]){
 	int offset = 0;
 	myStart = rank*jump;
 	myEnd = myStart+jump;
-	int* send = malloc(limit*sizeof(int));
+	int first_elem = rank*(n-2)/p + 2;
+    int last_elem = (rank+1)*(n-2)/p - 1 + 2;
+    int size = last_elem - first_elem + 1;
+    bool *array = new bool[size];
+    int next;
+    int global;
+    int local;
+    for(i = 0; i < size; i++){
+        array[i] = true; 
+    }
+	int i = 2;
+	while(i*i <= limit){
+		if(first_elem%i == 0){
+			index_first_multiple = 0;
+		}
+		else{
+			index_first_multiple = k - first_elem%k;
+		}
+		for(p = index_first_multiple; p < size; p+=i){
+			array[i] = false;
+		}
+		if(rank == 0) 
+			array[k-2] = true;
+		if(rank == 0){
+			next = k+1;
+			while(!array[next-2])
+				next+1;
+		}
+		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
+		local = 0;
+		global = 0;
+		for(m = 0; m < size; m++){
+			if(array[m]){
+				local++;
+			}
+		}
+		MPI_Reduce (&local, &global, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+	}
+	printf("%d\n", global);
+	/*
 	if(rank == 0){
 		nums = malloc(limit*sizeof(int));
 		for(i = 2; i <= limit; i++){
@@ -86,14 +133,29 @@ int main(int argc, char *argv[]){
 			MPI_Send(&nums[offset], jump, MPI_INT,p, 0, MPI_COMM_WORLD);
 			offset+=jump;
 		}
-		int* a = prime(myStart, myEnd, rank, NULL);
-
+		int* a = prime(myStart, myEnd, rank, NULL, NULL);
 	}
 	else{
 		nums = malloc(jump*sizeof(int));
 		MPI_Recv(nums,jump, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
-		int* a = prime(myStart, myEnd, rank, nums);
-		MPI_Gather(a, jump, MPI_INT, send, jump, MPI_INT, MPI_COMM_WORLD);
+		int* a = prime(myStart, myEnd, rank, nums, send);
+		int w = 0;
+		for(m = 0; m < limit; m++){
+			if(send[m] != NULL){
+				continue;
+			}
+			else{
+				if(w == sizeof(a)/sizeof(int)){
+					break;
+				}
+				else{
+					send[m] = a[w];
+					w++;
+				}
+			}
+		}
+
+		//MPI_Gather(a, jump, MPI_INT, send, jump, MPI_INT, MPI_COMM_WORLD);
 	}
 	/*
 	if(rank == 0){
