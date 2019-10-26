@@ -115,16 +115,16 @@ int main(int argc, char *argv[]){
 			i = next;
 		}
 		printf("%d\n",i);
-		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
-		local = 0;
-		global = 0;
-		for(m = 0; m < size; m++){
-			if(array[m]==1){
-				local++;
-			}
-		}
-		MPI_Reduce (&local, &global, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 	}
+	MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	local = 0;
+	global = 0;
+	for(m = 0; m < size; m++){
+		if(array[m]==1){
+			local++;
+		}
+	}
+	MPI_Reduce (&local, &global, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 	printf("%d\n", global);
 	/*
 	if(rank == 0){
