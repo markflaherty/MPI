@@ -87,13 +87,13 @@ int main(int argc, char *argv[]){
 	int first_elem = rank*(limit-2)/tasks + 2;
     int last_elem = (rank+1)*(limit-2)/tasks - 1 + 2;
     int size = last_elem - first_elem + 1;
-    boolean *array[size];
+    int *array[size];
     int next;
     int index_first_multiple;
     int global;
     int local;
     for(j = 0; j < size; j++){
-        array[i] = TRUE; 
+        array[j] = 1; 
     }
 	int i = 2;
 	while(i*i <= limit){
@@ -104,10 +104,10 @@ int main(int argc, char *argv[]){
 			index_first_multiple = i - first_elem%i;
 		}
 		for(p = index_first_multiple; p < size; p+=i){
-			array[i] = FALSE;
+			array[i] = 0;
 		}
 		if(rank == 0) 
-			array[i-2] = TRUE;
+			array[i-2] = 0;
 		if(rank == 0){
 			next = i+1;
 			while(!array[next-2])
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]){
 		local = 0;
 		global = 0;
 		for(m = 0; m < size; m++){
-			if(array[m]){
+			if(array[m]==1){
 				local++;
 			}
 		}
