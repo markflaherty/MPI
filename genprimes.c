@@ -1,179 +1,130 @@
-
-#include <stdio.h>
-#include <time.h>
-#include <math.h>
-#include <string.h>
 #include <mpi.h>
+#include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
-#define UPPER_BOUND 10000000000
-#define MODE 1  // 0 to forsake CL-ARG
-#define PRINT 0 // 1 to print primes.
-#define PAGE 2500
-
-
-#define SetBit(A,k)     ( A[(k/32)] |= (1 << (k%32)) )
-#define ClearBit(A,k)   ( A[(k/32)] &= ~(1 << (k%32)) )  
-#define TestBit(A,k)    ( A[(k/32)] & (1 << (k%32)) ) 
-#define MAX( a,b)  ( (a > b) ? a : b  )
-#define MIN( a,b)  ( (a < b) ? a : b  )
-
-
-int getRootPrimes(long limit , int** rootPrimes){
-    int i =0, count =0;
-    long llsqrt = ceil(sqrt(limit));
-    int prime =2;
-    int *arr = (int *)calloc(ceil(limit/32), sizeof(int));
-    while(1){
-      while (prime <= llsqrt && TestBit(arr,prime))
-            prime ++;
-      for (i = prime * prime; i <= limit; i += prime)
-                SetBit(arr,i);
-      prime ++;
-      if(prime > llsqrt) break;
-    }
-    for(i=2;i<limit;i++){
-        if(TestBit(arr,i))
-        count+=1;
-     }   
-     
-    (*rootPrimes) = (int *)calloc(count, sizeof(int));
-    count =0;
-    for(i=2;i<limit;i++){
-        if(!TestBit(arr,i)){
-        (*rootPrimes)[count] = i;
-        count+=1;
-        }
-     }
-     return count;
-}
-
-int small(long limit){
-    int* rootPrimes ;
-    long base;
-    return getRootPrimes(limit , &rootPrimes);
-}
-
-int removeComposites(long baseIndex, int limit , int* arr, int* rootPrimes, int rootCount)
-{       int i =0, j =0, count = 0;
-        long start, dprime;
-        for( i = 0; i< rootCount; i++)
-        {   
-            dprime = 2*rootPrimes[i];
-            start  = MAX(   (baseIndex+ (rootPrimes[i] - baseIndex%rootPrimes[i]))   ,  rootPrimes[i]*rootPrimes[i]  ) -  baseIndex;
-            
-            
-            if( start%2 == 0 )
-                start+=rootPrimes[i];
-            if(rootPrimes[i]==2)
-                dprime = 2;
-            
-            for(j = start ; j < limit; j+=dprime )
-                 SetBit(arr,j);
-        }
-        for( i = 0; i< limit; i++){
-            if(!TestBit(arr,i)){
-                count+=1;
-               printf(" %ld \n", (i+baseIndex));  
-             }
-        }
-        return count;
-}
-
-
+#include "this_MPI.h"
 int main(int argc, char *argv[]){
-    
-    long limit, n_hi, n_lo;
-    if (argc > 1 && MODE == 1)
-        limit = (long)pow(10,atoi(argv[1]));
-    else
-        limit = UPPER_BOUND;
+	int 	count;        /* local prime count */ 
+	double  elapsed_time; /* parallel execution time */
+	int 	first;        /* index of first multiple */
+	int 	global_count; /* global prime count */
+	int     high_value;   /* highest value on this proc */
+	int 	i;            /* */
+	int 	id;           /* process id number */
+	int 	index;        /* index of current prime */ 
+	int 	low_value;    /* lowest value on this proc */
+	char* 	marked;       /* portion of 2, ..., 'n' */
+	int 	n;            /* sieving from 2, ..., 'n' */
+	int 	p;            /* number of processes */
+	int 	proc0_size;   /* size of proc 0's subarray */
+	int 	prime;        /* current prime */
+	int 	size;         /* elements in marked string */
 
-    int p, id , root  = 0;
-    double wtime;
-    MPI_Init(NULL, NULL);
-    MPI_Comm_size(MPI_COMM_WORLD, &p);
-    MPI_Comm_rank(MPI_COMM_WORLD, &id);
-    if (id == 0)
-        wtime = MPI_Wtime();
-    if (id != p - 1)
-       n_hi = (long)(limit / p) * (id + 1);
-    else
-       n_hi = limit;
-    n_lo = (long)(limit / p) * id;
-    
+	MPI_Init(&argc, &argv);
 
-    long lsqrt = (long) ceil(sqrt(limit));
-    
-    if (lsqrt < 10000){
-     if(id == root){  
-        int ans = small(limit);
-        wtime = MPI_Wtime() - wtime;
-        printf("         N        Pi          Time\n");
-        printf("  %10ld    %10d  %16f\n", limit, ans, wtime);
-        }
-        MPI_Finalize();
-        exit(0);
-    }
+	MPI_Barrier(MPI_COMM_WORLD);
+	elapsed_time = -MPI_Wtime();
 
-    long part_size = n_hi - n_lo;
-    int* rootPrimes ;
-    long base;
-    int rootCount = getRootPrimes(lsqrt , &rootPrimes);
-    int d = 0;
-    long i;
-    int *arr = (int *)calloc((int)ceil((n_hi-n_lo)/32), sizeof(int));
-    if(n_lo == 0){
-        SetBit(arr,1);
-        SetBit(arr,4);       
-    }
-    SetBit(arr,0);
+	MPI_Comm_rank(MPI_COMM_WORLD, &id);
+	MPI_Comm_size(MPI_COMM_WORLD, &p);
 
-   long j = 0, count = 0;
-   long start, dprime;
-    
-    for( i = 0; i < rootCount; i++)
-    {   
-        dprime = 2 * rootPrimes[i];
-        if(n_lo == 0) start = ((long)rootPrimes[i])*((long)rootPrimes[i]);
-        else start  = MAX(   ( (long)ceil( ((double)n_lo) / rootPrimes[i]) * rootPrimes[i])   ,  ((long)rootPrimes[i])*((long)rootPrimes[i])  ) -  n_lo;  
+	if (argc != 2)
+	{
+		if (id == 0) /* parent process */
+			printf("Command line: %s <m>\n", argv[0]);
+		MPI_Finalize();
+		exit(1);
+	} /* if (argc != 2) */
 
-        if( start % 2 == 0 && rootPrimes[i] > 2)
-            start += rootPrimes[i];
-        if(rootPrimes[i] == 2)
-            dprime = 2;
+	n = atoi(argv[1]);
 
-        for(j = start ; j < part_size; j += dprime )
-                SetBit(arr,j);
-    }
+	/* figure out this process's share of the array, as well as the 
+   	   integers represented by the first and last array elements */
+	low_value  = 2 + BLOCK_LOW(id, p, n - 1);	
+	high_value = 2 + BLOCK_HIGH(id, p, n - 1);
+	size = BLOCK_SIZE(id, p, n - 1);
+	
+	/* bail out if all the primes used for sieving are not all held
+	   by process 0 */
+	proc0_size = (n - 1) / p;
 
-    int* all_range;
-    if(id == root){
-        all_range = (int*) calloc((limit/32), sizeof(int));
-    }
+	if ((2 + proc0_size) < (int)sqrt((double)n))
+	{
+		if (id == 0) /* parent process */
+			printf("Too many processes\n");
+		MPI_Finalize();
+		exit(1);
+	} /* if */
 
-    MPI_Gather(arr, (part_size/32), MPI_INT, all_range, (part_size/32), MPI_INT, root, MPI_COMM_WORLD);
+	/* allocate this process's share of the array */
+	marked = (char*)malloc(size * sizeof(char));
 
-   long total_count = 1;
-    if(id == root){
-        for(i = 1; i < limit; i += 2){
-            if (!TestBit(all_range,i)){
-                    total_count += 1;
-                    if(PRINT == 1)
-                    {   printf("%ld \n", i);
-                    }
-            }
-        }
-   }
-    if (id == root) {
-        wtime = MPI_Wtime() - wtime;
-        printf("         N        Pi          Time\n");
-        printf("  %10ld %10ld  %16f\n", limit, total_count, wtime);
-    }
-       
-    MPI_Finalize();
-    exit(0);
+	if (marked == NULL)
+	{
+		printf("Cannot allocate enough memory\n");
+		MPI_Finalize();
+		exit(1);
+	} /* if */
+
+	for (i = 0; i < size; i++)
+		marked[i] = 0;
+
+	if (id == 0) /* parent process */
+		index = 0;
+	prime = 2;
+
+	do 
+	{
+		if (prime * prime > low_value)
+		{
+			first = prime * prime - low_value;
+		}
+		else 
+		{
+			if (!(low_value % prime))
+				first = 0;
+			else 
+				first = prime - (low_value % prime);
+		}
+
+		for (i = first; i < size; i += prime)
+			marked[i] = 1; // ?? 
+		
+		if (id == 0) /* parent process */
+		{
+			while (marked[++index])
+				;
+			prime = index + 2;
+		}
+
+		MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	} /* do */
+	while (prime * prime <= n);
+
+	count = 0;
+	for (i = 0; i < size; i++)
+		if (!marked[i])
+			count++;
+
+	MPI_Reduce(&count, &global_count, 1, MPI_INT, 
+			   MPI_SUM, 0, MPI_COMM_WORLD);
+
+	/* stop the timer */
+	elapsed_time += MPI_Wtime();
+
+	/* print the results */
+	if (id == 0) /* parent process */
+	{
+		printf("%d primes are less than or equal to %d\n", 
+			   global_count, n);
+		printf("Total elapsed time: %10.6f\n", 
+			   elapsed_time);
+	} /* if */
+
+	MPI_Finalize();
+
+	return 0;
 }
-
 
 
 
@@ -385,4 +336,4 @@ int main(int argc, char *argv[]){
 		
 
 }
-*/
+
