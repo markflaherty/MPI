@@ -74,7 +74,7 @@ int* prime(int start, int end, int rank, int* arr, int* a){
 int limit = 100;
 int sum = 0;
 int main(int argc, char *argv[]){
-	int p,m,tasks,rank,myStart,myEnd;
+	int j,p,m,tasks,rank,myStart,myEnd;
 	int *nums;
 	MPI_Status stat;
 	MPI_Init(&argc,&argv); 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
     int index_first_multiple;
     int global;
     int local;
-    for(i = 0; i < size; i++){
+    for(j = 0; j < size; j++){
         array[i] = true; 
     }
 	int i = 2;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
 			index_first_multiple = 0;
 		}
 		else{
-			index_first_multiple = i - first_elem%k;
+			index_first_multiple = i - first_elem%i;
 		}
 		for(p = index_first_multiple; p < size; p+=i){
 			array[i] = false;
