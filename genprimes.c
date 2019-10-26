@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
     int index_first_multiple;
     int global;
     int local;
-    if(!(limit/tasks > sqrt(n))){
+    if(!(limit/tasks > sqrt(limit))){
         if(rank == 1) printf("Error: there are too many processes! \n");
         MPI_Finalize();
         exit (1);
