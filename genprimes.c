@@ -22,7 +22,7 @@ int main (int argc, char ** argv) {
    exit(1);
   }
   if ((2 + (n - 1 / comm_size)) < (int) sqrt((double) n)) {
-    if (comm_rank == 0) printf("Too many processes.\n");
+    if (rank == 0) printf("Too many processes.\n");
     MPI_Finalize();
     exit(1);
   }
