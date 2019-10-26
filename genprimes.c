@@ -106,14 +106,14 @@ int main(int argc, char *argv[]){
 		for(p = index_first_multiple; p < size; p+=i){
 			array[i] = 0;
 		}
-		if(rank == 0) 
-			array[i-2] = 0;
 		if(rank == 0){
 			next = i+1;
+			array[i-2] = 0;
 			while(array[next-2] == 0)
 				next+1;
-			i = next;
 		}
+		array[i-2] = 0;
+		i = next;
 		printf("%d\n",i);
 	}
 	MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
