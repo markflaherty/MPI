@@ -111,9 +111,9 @@ int main(int argc, char *argv[]){
 			array[i-2] = 0;
 			while(array[next-2] == 0)
 				next+1;
+			i = next;
 		}
-		array[i-2] = 0;
-		i = next;
+		//array[i-2] = 0;
 		printf("%d\n",i);
 	}
 	MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
