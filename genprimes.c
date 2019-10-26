@@ -31,12 +31,13 @@ int main (int argc, char ** argv) {
    exit(1);
   }
   
-  if (rank == 0) index = 0;
+  if (rank == 0){
+  	index = 0;
+  } 
   prime = 2;
-  
   do {
-    if (prime * prime > low) {
-      first = prime * prime - low;
+    if (prime* prime > low) {
+      first = prime*prime-low;
     } else {
       if ((low % prime) == 0) first = 0;
       else first = prime - (low % prime);
@@ -48,8 +49,9 @@ int main (int argc, char ** argv) {
       while (hit[++index]);
       prime = index + 2;
     }
-    
-    if (comm_size > 1) MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
+    if(comm_size > 1){
+    	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
+    }
   } while (prime * prime <= n);
   
   count = 0;
