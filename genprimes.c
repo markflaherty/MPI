@@ -22,8 +22,8 @@ int main (int argc, char ** argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
   MPI_Barrier(MPI_COMM_WORLD);
   t = -MPI_Wtime();
-  low  = 2 + (long int)(comm_rank) * (long int)(n - 1) / (long int)comm_size;
-  high = 1 + (long int)(comm_rank + 1) * (long int)(n - 1) / (long int)comm_size;
+  low  = 2 + (long int)(rank) * (long int)(n - 1) / (long int)comm_size;
+  high = 1 + (long int)(rank + 1) * (long int)(n - 1) / (long int)comm_size;
   size = high - low + 1;
   hit = (char *) calloc(size, sizeof(char));
   if (hit == NULL) {
