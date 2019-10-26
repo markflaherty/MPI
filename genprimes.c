@@ -93,7 +93,7 @@ int main(int argc, char *argv[]){
     int global;
     int local;
     for(j = 0; j < size; j++){
-        array[i] = true; 
+        array[i] = TRUE; 
     }
 	int i = 2;
 	while(i*i <= limit){
@@ -104,10 +104,10 @@ int main(int argc, char *argv[]){
 			index_first_multiple = i - first_elem%i;
 		}
 		for(p = index_first_multiple; p < size; p+=i){
-			array[i] = false;
+			array[i] = FALSE;
 		}
 		if(rank == 0) 
-			array[i-2] = true;
+			array[i-2] = TRUE;
 		if(rank == 0){
 			next = i+1;
 			while(!array[next-2])
