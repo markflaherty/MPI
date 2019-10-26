@@ -92,6 +92,11 @@ int main(int argc, char *argv[]){
     int index_first_multiple;
     int global;
     int local;
+    if(!(limit/tasks > sqrt(n))){
+        if(rank == 1) printf("Error: there are too many processes! \n");
+        MPI_Finalize();
+        exit (1);
+    }
     for(j = 0; j < size; j++){
         array[j] = 1; 
     }
@@ -107,15 +112,16 @@ int main(int argc, char *argv[]){
 			array[i] = 0;
 		}
 		if(rank == 0){
-			next = i+1;
 			array[i-2] = 0;
+		}
+		if(rank == 0){
+			next = i+1;
 			while(array[next-2] == 0)
 				next+1;
 			i = next;
 		}
 		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 		//array[i-2] = 0;
-		printf("%d\n",i);
 	}
 	local = 0;
 	global = 0;
