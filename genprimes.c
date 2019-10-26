@@ -64,7 +64,7 @@ int main (int argc, char ** argv) {
   for (i = 0; i < size; i++){
   	if (hit[i] == 0){
   		count++;
-  		printf("%d\n",i);
+  		printf("%d\n",i-1);
   	} 
   }
   if (comm_size > 1) {
