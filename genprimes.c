@@ -113,10 +113,10 @@ int main(int argc, char *argv[]){
 				next+1;
 			i = next;
 		}
+		MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 		//array[i-2] = 0;
 		printf("%d\n",i);
 	}
-	MPI_Bcast (&i, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	local = 0;
 	global = 0;
 	for(m = 0; m < size; m++){
