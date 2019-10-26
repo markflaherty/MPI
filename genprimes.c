@@ -20,7 +20,7 @@ int main (int argc, char ** argv) {
    MPI_Finalize();
    exit(1);
   }
-  
+  /*
   if (rank == 0) 
   	index = 0;
   prime = 2;
@@ -47,7 +47,8 @@ int main (int argc, char ** argv) {
     	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
     }
   }
-  /*
+  */
+  
   do {
     if (prime*prime > low) {
       first = prime*prime - low;
@@ -67,7 +68,6 @@ int main (int argc, char ** argv) {
     if (comm_size > 1) 
     	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
   } while (prime * prime <= n);
-  */
   count = 0;
   for(p = 0; p < size; p++){
   	if(hit[p] == 0){
