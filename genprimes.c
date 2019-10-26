@@ -30,17 +30,16 @@ int main (int argc, char ** argv) {
    MPI_Finalize();
    exit(1);
   }
-  
   if (rank == 0){
   	index = 0;
   } 
   prime = 2;
   do {
-    if (prime* prime > low) {
+    if (prime*prime > low) {
       first = prime*prime-low;
     } 
     else {
-      if ((low % prime) == 0){
+      if ((low%prime) == 0){
       	first = 0;
       } 
       else{
@@ -48,8 +47,9 @@ int main (int argc, char ** argv) {
       } 
     }
     
-    for (i = first; i < size; i += prime) hit[i] = 1;
-    
+    for (i = first; i < size; i += prime){
+    	hit[i] = 1;
+    }
     if (rank == 0) {
       while (hit[++index]);
       prime = index + 2;
@@ -61,8 +61,12 @@ int main (int argc, char ** argv) {
   
   count = 0;
   
-  for (i = 0; i < size; i++) if (hit[i] == 0) count++;
-  
+  for (i = 0; i < size; i++){
+  	if (hit[i] == 0){
+  		count++;
+  		printf("%d\n",i);
+  	} 
+  }
   if (comm_size > 1) {
     MPI_Reduce(&count, &g, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
   } 
