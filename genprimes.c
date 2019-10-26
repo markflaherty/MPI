@@ -2,17 +2,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-int prime(int start, int end, int rank){
-	int i,j,k,m;
+int* prime(int start, int end, int rank, int* arr, int* a){
+	int i,j,k,m, p;
 	int lim = (int)((end-start)+1)/2;
 	int count = 0;
 	int distance = end-start;
-	//int *a = malloc(sizeof(int)*distance);
 	printf("%d\t %d\t %s\t %d\t %d\n", rank, start, "yes",count,end);
-	/*
-	for(j = start; j < end; j++){
-		a[j] = j;
+	if(arr == NULL){
+		for(j = 0; j < distance; j++){
+			int curr = a[i];
+			if(curr == 0){
+				continue;
+			}
+			for(k = i; k < end; k++){
+				if(a[k] != 0){
+					if(a[k] != curr && a[k]%curr == 0){
+						a[k] = 0;
+					}
+				}
+			}
+		}
 	}
+	else{
+
+	}
+
 	/*
 	for(i = start; i <= lim; i++){
 		int curr = a[i];
@@ -33,7 +47,21 @@ int prime(int start, int end, int rank){
 		}
 	}
 	*/
-	return count;
+	for(m = 0; m < end; m++){
+		if(arr[m] == 0){
+			count++;
+		}
+	}
+	int* ret = malloc(count*sizeof(int));
+	int iter = 0;
+	for(p = 0; p < end; p++){
+		if(arr[m] != 0){
+			ret[iter] = arr[m];
+			iter++;
+		}
+	} 
+
+	return ret;
 }
 int limit = 100;
 int sum = 0;
@@ -48,6 +76,7 @@ int main(int argc, char *argv[]){
 	int offset = 0;
 	myStart = rank*jump;
 	myEnd = myStart+jump;
+	int* send = malloc(limit*sizeof(int));
 	if(rank == 0){
 		nums = malloc(limit*sizeof(int));
 		for(i = 2; i <= limit; i++){
@@ -57,13 +86,14 @@ int main(int argc, char *argv[]){
 			MPI_Send(&nums[offset], jump, MPI_INT,p, 0, MPI_COMM_WORLD);
 			offset+=jump;
 		}
-		prime(myStart, myEnd, rank);
+		int* a = prime(myStart, myEnd, rank, NULL);
 
 	}
 	else{
 		nums = malloc(jump*sizeof(int));
 		MPI_Recv(nums,jump, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
-		prime(myStart, myEnd, rank);
+		int* a = prime(myStart, myEnd, rank, nums);
+		MPI_Gather(a, jump, MPI_INT, send, jump, MPI_INT, MPI_COMM_WORLD);
 	}
 	/*
 	if(rank == 0){
