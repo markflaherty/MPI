@@ -74,7 +74,7 @@ int* prime(int start, int end, int rank, int* arr, int* a){
 int limit = 100;
 int sum = 0;
 int main(int argc, char *argv[]){
-	int i,p,m,tasks,rank,myStart,myEnd;
+	int p,m,tasks,rank,myStart,myEnd;
 	int *nums;
 	MPI_Status stat;
 	MPI_Init(&argc,&argv); 
@@ -84,10 +84,10 @@ int main(int argc, char *argv[]){
 	int offset = 0;
 	myStart = rank*jump;
 	myEnd = myStart+jump;
-	int first_elem = rank*(n-2)/p + 2;
-    int last_elem = (rank+1)*(n-2)/p - 1 + 2;
+	int first_elem = rank*(limit-2)/p + 2;
+    int last_elem = (rank+1)*(limit-2)/p - 1 + 2;
     int size = last_elem - first_elem + 1;
-    bool *array = new bool[size];
+    bool *array[size];
     int next;
     int global;
     int local;
@@ -100,15 +100,15 @@ int main(int argc, char *argv[]){
 			index_first_multiple = 0;
 		}
 		else{
-			index_first_multiple = k - first_elem%k;
+			index_first_multiple = i - first_elem%k;
 		}
 		for(p = index_first_multiple; p < size; p+=i){
 			array[i] = false;
 		}
 		if(rank == 0) 
-			array[k-2] = true;
+			array[i-2] = true;
 		if(rank == 0){
-			next = k+1;
+			next = i+1;
 			while(!array[next-2])
 				next+1;
 		}
