@@ -75,7 +75,7 @@ int main (int argc, char ** argv) {
   	}
   }
   if (comm_size > 1) {
-    MPI_Reduce(&count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&count, &global, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
   } 
   else {
     global = count;
