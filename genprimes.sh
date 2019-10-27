@@ -9,4 +9,4 @@ fi
 mpicc -g -Wall -o genprimes genprimes.c -std=c99
 mpirun -n $numP ./genprimes $1 > output/$1
 
-cat output/$numN
+#cat output/$numN
