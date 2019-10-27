@@ -4,7 +4,7 @@
 #include <stdlib.h>
 int main (int argc, char ** argv) {
   int i;
-  int n = 100;
+  int n = atoi(argv[1]);
   int index;
   int size;
   int prime;
