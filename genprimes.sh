@@ -3,7 +3,6 @@
 set -e 
 
 numP="2"
-numN = "100"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	module load mpi/openmpi-x86_64
 fi
