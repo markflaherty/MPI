@@ -62,7 +62,7 @@ int main (int argc, char ** argv) {
   for (i = 0; i < size; i++){
   	if (hit[i] == 0){
   		count++;
-  		printf("%d\n", i+low);
+  		printf("%d ", i+low);
   	} 
 
   }
@@ -75,7 +75,7 @@ int main (int argc, char ** argv) {
   
   t += MPI_Wtime();
   if (rank == 0) {
-    printf("In %f seconds we found %d primes less than or equal to %d.\n",
+    printf("%d primes in %f secs.\n",
 		t, g, n);
   }
   

@@ -24,6 +24,7 @@ int prime(int x){
 	}
 	for(m = 0; m <= x; m++){
 		if(a[m] != 0){
+			printf("%d\n", );
 			count++;
 		}
 	}
@@ -40,7 +41,6 @@ int main(){
 	else{
 		int count = prime(limit);
 		printf("%d\n", count);
-		printf("say my name say my name, \nif no one is around you say baby I love you, \nif you ain't running games\n");
 	}
 
 }
