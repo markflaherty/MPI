@@ -4,7 +4,7 @@
 #include <stdlib.h>
 int main (int argc, char ** argv) {
   int i;
-  int n = 1000;
+  int n = 100;
   int index;
   int size;
   int prime;
@@ -65,6 +65,9 @@ int main (int argc, char ** argv) {
   for (i = 0; i < size; i++){
   	if (hit[i] == 0){
   		count++;
+  		if(rank != 0){
+  			printf("%d\n",i);
+  		}
   	} 
 
   }
