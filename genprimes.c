@@ -53,7 +53,6 @@ int main (int argc, char ** argv) {
     if (rank == 0) {
       while (hit[++index]);
       prime = index + 2;
-      printf("%d\n",prime);
     }
     if(comm_size > 1){
     	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -66,7 +65,7 @@ int main (int argc, char ** argv) {
   	if (hit[i] == 0){
   		count++;
   		if(rank != 0){
-  			printf("%d\n",i);
+  			printf("%d\n",i+low);
   		}
   	} 
 
