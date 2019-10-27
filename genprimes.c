@@ -100,8 +100,7 @@ int main (int argc, char ** argv) {
   t += MPI_Wtime();
   //print time 
   if (rank == 0) {
-    printf("%d primes in %f secs.\n",
-		t, g, n);
+    printf("%d primes in %f secs.\n",g,t);
   }
   
   MPI_Finalize();
