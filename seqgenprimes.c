@@ -6,9 +6,12 @@ int prime(int x){
 	int lim = (int)(x+1/2);
 	int count = 0;
 	int a[x+1];
+	//Generate the array
 	for(j = 2; j <= x; j++){
 		a[j] = j;
 	}
+	//Go through the array for each of the current prime numbers 
+	// and eliminate their multiples
 	for(i = 2; i <= lim; i++){
 		int curr = a[i];
 		if(curr == 0){
@@ -22,6 +25,7 @@ int prime(int x){
 			}
 		}
 	}
+	//Count them 
 	for(m = 0; m <= x; m++){
 		if(a[m] != 0){
 			printf("%d\n", );
