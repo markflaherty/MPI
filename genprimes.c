@@ -64,9 +64,7 @@ int main (int argc, char ** argv) {
   for (i = 0; i < size; i++){
   	if (hit[i] == 0){
   		count++;
-  		if(rank != 0){
-  			printf("%d\n",i+low);
-  		}
+  		printf("%d\n", i+low);
   	} 
 
   }
