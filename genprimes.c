@@ -57,16 +57,18 @@ int main (int argc, char ** argv) {
     if(comm_size > 1){
     	MPI_Bcast(&prime,  1, MPI_INT, 0, MPI_COMM_WORLD);
     }
-  } while (prime * prime <= n);
+  } while (prime*prime<=n);
   
   count = 0;
   
-  for (i = 0; i < size; i++){
-  	if (hit[i] == 0){
-  		count++;
-  		printf("%d\n",i);
-  	} 
+  if(rank == 0){
+  	  	for (i = 0; i < size; i++){
+  			if (hit[i] == 0){
+  				count++;
+  				printf("%d\n",i);
+  			} 
 
+  		}	
   }
   if (comm_size > 1) {
     MPI_Reduce(&count, &g, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
